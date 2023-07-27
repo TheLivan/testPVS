@@ -19,8 +19,8 @@ pipeline {
     stages {
         stage('clonning') {
             steps {
-            //bat 'exit 0'
-            bat 'git clone https://github.com/TheLivan/testPVS.git'
+               cleanWs()
+               bat 'git clone https://github.com/TheLivan/testPVS.git'
             }
         }
         
@@ -40,4 +40,30 @@ pipeline {
 4.
 ```
 @daily
+```
+5.
+```
+pipeline {
+    agent any
+
+    stages {
+        stage('clonning') {
+            steps {
+                cleanWs()
+                bat 'git clone https://github.com/TheLivan/testPVS.git'
+            }
+        }
+        
+        stage('work') {
+            steps {
+                bat '''
+                chcp 1251
+                cd testPVS
+                docker build -f ConsoleApp1\\Dockerfile --force-rm -t worker2/try7 .
+                docker run -i worker2/try7
+                '''
+            }
+        }
+    }
+}
 ```
