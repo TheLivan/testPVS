@@ -14,7 +14,7 @@ RUN dotnet build "ConsoleApp1.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "ConsoleApp1.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-FROM base AS final
+FROM build AS test
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ConsoleApp1.dll"]
+COPY . .
+ENTRYPOINT ["dotnet", "test", "--logger:trx"]
